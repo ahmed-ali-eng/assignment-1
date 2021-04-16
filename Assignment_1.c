@@ -1,19 +1,22 @@
 #include <stdio.h>
+#include <stdlib.h>
+struct bday 
+{
+    int day;
+    int month;
+    int year;
+};
+
 struct student
 {
-    char name[50];
+    char *name;
     int ID;
-    int day,month,year;
+    struct bday b_day;
     int score;
     struct student* next;
 };
 int main()
 {
-    printf("Welcome");
-    
-
-
-
-
+    printf("Welcome\n");
     return 0;
 }
