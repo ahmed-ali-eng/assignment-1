@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
 #include <ctype.h>
+#include<stdbool.h>
 
 struct b_day
 {
@@ -30,74 +30,28 @@ int num_n;
 int num_;
 char garbage;
 //functions
-void print_(node* list);
+void print_l(node* list);
 void add_node(node** list, node** tail, int num_, char order);
 void addbet(node** list, int num_);
 void get_data(node* n, int num_);
 void free_(node* list);
 int add_integer(int* req);
+void linked_list();
 
 int main()
 {
-	int test;
-	printf("Welcome\n");
-	node* list = NULL;
-	node* tail = NULL;
-	printf("please enter the number of students: ");
-
-	if (scanf_s("%i", &test) == 1 && test >= 0)
-	{
-		num_ = test;
-	}
-	else
-	{
-		printf("Invalid input\n");
-		return 0;
-	}
-	num_n = 0;
-	int op;
-
-	for (int i = 0; i < num_; i++)
-	{
-		add_node(&list, &tail, i + 1, 't');
-	}
-
+	int choice;
+	printf("Choose an option to continue.\n(1)Linked lists.\n(2)Dynamic arrays.\nInput:");
 	do {
-		printf("Enter the desired operation:-\n(1)insert at the beginning.\n(2)insert at the end.\n(3)insert at the middle.\n(4)Exit.\n");
-		op = add_integer(&op);
-		switch (op)
-		{
-		case (1):
-		{
-			add_node(&list, &tail, num_, 'h');
-			//get_data(list, 1);
-			break;
-		}
-		case (2):
-		{
-			add_node(&list, &tail, num_, 't'); //end
-			//get_data(tail, num_ + 1);
-			break;
-		}
-		case (3):
-		{
-			if (num_n <= 1)
-			{
-				printf("Insufficient number of students.\n");
-				break;
-			}
-			addbet(&list, num_);
-			break;
-		}
-		case(4):
-			break;
-		}
-	} while ((op > 4) || (op == 0));
-	print_(list);
-	printf("\nThe number of nodes is : %i\n", num_n);
-	printf("The size of the structure is %i\n", sizeof(struct student));
-	printf("The size of a node is %i\n", sizeof(node));
-	free_(list);
+		choice = add_integer(&choice);
+	} while ((choice != 1) && (choice != 2));
+	//scanf_s("%i", &choice);
+	if (choice == 1)
+	{
+		linked_list();
+	}
+
+
 }
 
 void add_node(node** list, node** tail, int spot, char order)
@@ -152,7 +106,7 @@ void addbet(node** list, int num_)
 	num_n++;
 }
 
-void print_(node* list)
+void print_l(node* list)
 {
 	int z = 0;
 	for (node* tmp_ = list; tmp_ != NULL; tmp_ = tmp_->next)
@@ -207,4 +161,66 @@ int add_integer(int* req) //added
 			if (*req >= 0)
 				return *req;
 	}
+}
+void linked_list()
+{
+	int test;
+	printf("Welcome\n");
+	node* list = NULL;
+	node* tail = NULL;
+	printf("please enter the number of students: ");
+
+	if (scanf_s("%i", &test) == 1 && test >= 0)
+	{
+		num_ = test;
+	}
+	else
+	{
+		printf("Invalid input\n");
+		return;
+	}
+	num_n = 0;
+	int op;
+
+	for (int i = 0; i < num_; i++)
+	{
+		add_node(&list, &tail, i + 1, 't');
+	}
+
+	do {
+		printf("Enter the desired operation:-\n(1)insert at the beginning.\n(2)insert at the end.\n(3)insert at the middle.\n(4)Exit.\n");
+		op = add_integer(&op);
+		switch (op)
+		{
+		case (1):
+		{
+			add_node(&list, &tail, num_, 'h');
+			//get_data(list, 1);
+			break;
+		}
+		case (2):
+		{
+			add_node(&list, &tail, num_, 't'); //end
+			//get_data(tail, num_ + 1);
+			break;
+		}
+		case (3):
+		{
+			if (num_n <= 1)
+			{
+				printf("Insufficient number of students.\n");
+				break;
+			}
+			addbet(&list, num_);
+			break;
+		}
+		case(4):
+			break;
+		}
+	} while ((op > 4) || (op == 0));
+	print_l(list);
+	printf("\nThe number of nodes is : %i\n", num_n);
+	printf("The size of the structure is %i\n", sizeof(struct student));
+	printf("The size of a node is %i\n", sizeof(node));
+	free_(list);
 }
