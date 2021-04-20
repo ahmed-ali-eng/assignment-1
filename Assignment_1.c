@@ -33,60 +33,19 @@ void data_cpy(struct student* dest, struct student* src);
 struct student* add_element_l(struct student* ptr2, int n);
 struct student* add_element_m(struct student* ptr2, int n);
 void print_(struct student* ptr, int m);
+void dynamic_array();
 
 int main()
 {
-    printf("Welcome\n");
-    int position;
-    int test;
-    
-    printf("please enter the size of the array: ");
-    
-    if (scanf_s("%i", &test) == 1 && test >= 0)
-    {
-        n = test;
-    }
-    else
-    {
-       printf("Invalid input\n");
-       return 0;
-    }
-    struct student* students = NULL;
-    students = create_array(n);
-    int op1;
+    int choice;
+    printf("Choose an option to continue.\n(1)Linked lists.\n(2)Dynamic arrays.\nInput:");
     do {
-        printf("Enter the desired operation:-\n(1)insert at the beginning.\n(2)insert at the end.\n(3)insert in the middle.\n(4)Exit.\n");
-        scanf_s("%i", &op1);
-        switch (op1)
-        {
-        case(1):
-        {
-            students = insert_begin(students, n);
-            break;
-        }
-        case(2):
-        {
-            students = add_element_l(students, n);
-            break;
-        }
-        case(3):
-        {
-            if (n <= 0)
-            {
-                printf("insufficient number of students\n");
-                break;
-            }
-
-            students = add_element_m(students,n);
-            break;
-        }
-        case(4):
-            break;
-        }
-    } while ((op1 > 4) || (op1 == 0));
-    print_(students,n);
-    printf("the size of the structure is %i ", sizeof(struct student));
-    free(students);
+        choice = add_integer(&choice);
+    } while (choice != 1 && choice != 2);
+    if (choice == 2)
+    {
+        dynamic_array;
+    }
 }
 struct student* create_array(int n)
 
@@ -213,4 +172,58 @@ int add_integer(int* req) //added
             if(*req >=0)
                 return *req;
     }
+}
+void dynamic_array()
+{
+    printf("Welcome\n");
+    int position;
+    int test;
+
+    printf("please enter the size of the array: ");
+
+    if (scanf_s("%i", &test) == 1 && test >= 0)
+    {
+        n = test;
+    }
+    else
+    {
+        printf("Invalid input\n");
+        return 0;
+    }
+    struct student* students = NULL;
+    students = create_array(n);
+    int op1;
+    do {
+        printf("Enter the desired operation:-\n(1)insert at the beginning.\n(2)insert at the end.\n(3)insert in the middle.\n(4)Exit.\n");
+        scanf_s("%i", &op1);
+        switch (op1)
+        {
+        case(1):
+        {
+            students = insert_begin(students, n);
+            break;
+        }
+        case(2):
+        {
+            students = add_element_l(students, n);
+            break;
+        }
+        case(3):
+        {
+            if (n <= 0)
+            {
+                printf("insufficient number of students\n");
+                break;
+            }
+
+            students = add_element_m(students, n);
+            break;
+        }
+        case(4):
+            break;
+        }
+    } while ((op1 > 4) || (op1 == 0));
+    print_(students, n);
+    printf("the size of the structure is %i ", sizeof(struct student));
+    free(students);
 }
