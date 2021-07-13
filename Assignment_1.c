@@ -7,6 +7,7 @@
 #include <string.h>
 #include <ctype.h>
 #include<stdbool.h>
+#include <time.h>
 
 struct b_day
 {
@@ -39,21 +40,23 @@ char garbage;
 //Dynamic_Array_Functions
 void dynamic_array();
 struct student* create_array(int n);
-struct student* insert_begin(struct student* ptr2, int n_);
+struct student* insert_begin(struct student* ptr2, int n_, int op);
 void data_(struct student* ptr_d, int i);
 void data_cpy(struct student* dest, struct student* src);
-struct student* add_element_l(struct student* ptr2, int n);
-struct student* add_element_m(struct student* ptr2, int n);
+struct student* add_element_l(struct student* ptr2, int n, int op);
+struct student* add_element_m(struct student* ptr2, int n, int op);
 void print_(struct student* ptr, int m);
+void data_auto(struct student* ptr_d);
 
 //Linked_Lists_Functions
 void linked_list();
 void print_l(node* list);
-void add_node(node** list, node** tail, int num_, char order);
-void addbet(node** list, int num_);
+void add_node(node** list, node** tail, int num_,int op, char order);
+void addbet(node** list, int num_, int op);
 void get_data(node* n, int num_);
 void free_(node* list);
 int add_integer(int* req);
+void get_data_auto(node* n);
 
 int main()
 {
@@ -90,7 +93,7 @@ struct student* create_array(int n) //dynamic array
     }
     return ptr;
 }
-struct student* insert_begin(struct student* ptr2, int n_) //dynamic array
+struct student* insert_begin(struct student* ptr2, int n_, int op) //dynamic array
 {
     struct student* ptr3;
     ptr3 = (struct student*)malloc((n + 1) * sizeof(struct student));
@@ -99,7 +102,10 @@ struct student* insert_begin(struct student* ptr2, int n_) //dynamic array
         printf("failed to allocate\n");
         return 0;
     }
-    data_(&ptr3[0], 1);
+    if(op == 1)
+        data_(&ptr3[0], 1);
+    if (op == 2)
+        data_auto(&ptr3[0]);
 
     for (int i = 0; i < n; i++)
     {
@@ -109,7 +115,7 @@ struct student* insert_begin(struct student* ptr2, int n_) //dynamic array
     //print_(ptr3, n);
     return ptr3;
 }
-struct student* add_element_l(struct student* ptr2, int n_) //dynamic array
+struct student* add_element_l(struct student* ptr2, int n_,int op) //dynamic array
 {
     struct student* ptr3;
     ptr3 = (struct student*)realloc(ptr2, (n + 1) * sizeof(struct student));
@@ -118,11 +124,14 @@ struct student* add_element_l(struct student* ptr2, int n_) //dynamic array
         printf("failed to allocate\n");
         return 0;
     }
-    data_(&ptr3[n], n + 1);
+    if(op == 1)
+        data_(&ptr3[n], n + 1);
+    if (op == 2)
+        data_auto(&ptr3[n]);
     n++;
     return ptr3;
 }
-struct student* add_element_m(struct student* ptr2, int n_)//dynamic array
+struct student* add_element_m(struct student* ptr2, int n_, int op)//dynamic array
 {
     struct student* ptr3;
     ptr3 = (struct student*)malloc((n + 1) * sizeof(struct student));
@@ -137,7 +146,10 @@ struct student* add_element_m(struct student* ptr2, int n_)//dynamic array
     {
         data_cpy(&ptr3[i], &ptr2[i]);
     }
-    data_(&ptr3[position_], position_ + 1);
+    if(op == 1)
+        data_(&ptr3[position_], position_ + 1);
+    if (op == 2)
+        data_auto(&ptr3[position_]);
     position_++;
     for (int i = position_; i <= n; i++)
     {
@@ -168,6 +180,16 @@ void data_(struct student* ptr_d, int i) //dyanmic array
     printf("Score of student %d: ", i);
     ptr->score_ = add_integer(&ptr->score_);
 }
+void data_auto(struct student* ptr_d)
+{
+    char name[] = "Cayde";
+    strcpy_s((ptr_d->name), 6, name);
+    ptr_d->ID = 45;
+    ptr_d->bday.day = 4;
+    ptr_d->bday.month = 9;
+    ptr_d->bday.year = 2018;
+    ptr_d->score_ = 7777;
+}
 void data_cpy(struct student* dest, struct student* src)
 {
     strcpy_s(dest->name, 50, src->name);
@@ -188,7 +210,7 @@ void print_(struct student* ptr, int n) //dynamic array
         printf("The grade of the student is %i\n", (ptr + i)->score_);
     }
 }
-void add_node(node** list, node** tail, int spot, char order) //linked lists
+void add_node(node** list, node** tail, int spot,int op, char order) //linked lists
 {
     node* n = malloc(sizeof(node));
     if (n == NULL)
@@ -196,7 +218,10 @@ void add_node(node** list, node** tail, int spot, char order) //linked lists
         printf("failed to allocate memory\n");
         return;
     }
-    get_data(n, spot);
+    if( op == 1)
+        get_data(n, spot);
+    if (op == 2)
+        get_data_auto(n);
     if (order == 'h' || order == 'H')
     {
         n->next = (*list);
@@ -221,7 +246,7 @@ void add_node(node** list, node** tail, int spot, char order) //linked lists
     return;
 }
 
-void addbet(node** list, int num_)
+void addbet(node** list, int num_ , int op)
 {
     node* n = malloc(sizeof(node));
     if (n == NULL)
@@ -229,7 +254,10 @@ void addbet(node** list, int num_)
         printf("failed to allocate memory\n");
         return;
     }
-    get_data(n, num_n / 2 + 1);
+    if(op == 1)
+        get_data(n, num_n / 2 + 1);
+    if (op == 2)
+        get_data_auto(n);
     node* tmpb = (*list);
     for (int i = 1; i < num_n / 2; i++)
     {
@@ -285,6 +313,16 @@ void get_data(node* n, int pos)
     printf("Score: ");
     n->students.score_ = add_integer(&n->students.score_);
 }
+void get_data_auto(node* n) //new
+{
+    char name[] = "Cayde";
+    strcpy_s((n->students.name), 6, name);
+    n->students.ID = 6;
+    n->students.bday.day = 4;
+    n->students.bday.month = 9;
+    n->students.bday.year = 2018;
+    n->students.score_ = 7777;
+}
 
 int add_integer(int* req) //added
 {
@@ -318,29 +356,29 @@ void linked_list()
 
     for (int i = 0; i < num_; i++)
     {
-        add_node(&list, &tail, i + 1, 't');
+        add_node(&list, &tail, i + 1,1, 't');
     }
     while (1)
     {
-        printf("Enter the desired operation:-\n(1)insert at the beginning.\n(2)insert at the end.\n(3)insert at the middle.\n(4)Exit.\n");
+        printf("Enter the desired operation:-\n(1)insert at the beginning.\n(2)insert at the end.\n(3)insert at the middle.\n(4)Time complexity at the beginning.\n(5)Time complexity at the end\n(6)Time complexity in the middle\n(7)Exit\n");
         op = add_integer(&op);
-        if (op == 4)
+        if (op == 7)
         {
             break;
         }
         do {
-
+            
             switch (op)
             {
             case (1):
             {
-                add_node(&list, &tail, num_, 'h');
+                add_node(&list, &tail, num_,1, 'h');
                 //get_data(list, 1);
                 break;
             }
             case (2):
             {
-                add_node(&list, &tail, num_, 't'); //end
+                add_node(&list, &tail, num_,1, 't'); //end
                 //get_data(tail, num_ + 1);
                 break;
             }
@@ -351,16 +389,58 @@ void linked_list()
                     printf("Insufficient number of students.\n");
                     break;
                 }
-                addbet(&list, num_);
+                addbet(&list, num_,1);
                 break;
             }
             case(4):
+            {
+                clock_t start;
+                clock_t end;
+                for (int i = 0; i < 500; i++)
+                {
+                    start = clock();
+                    add_node(&list, &tail, num_, 2, 'h');
+                    end = clock();
+                    double TimeTaken = (double)(end - start) / CLOCKS_PER_SEC;
+                    printf("Time Complexity for inserting at the beggining : %f\n", TimeTaken);
+                }
+                return;
+            }
+            case(5):
+            {
+                clock_t start;
+                clock_t end;
+                for (int i = 0; i < 500; i++)
+                {
+                    start = clock();
+                    add_node(&list, &tail, num_, 2, 't');
+                    end = clock();
+                    double TimeTaken = (double)(end - start) / CLOCKS_PER_SEC;
+                    printf("Time Complexity for inserting at the end : %f\n", TimeTaken);
+                }
+                return;
+            }
+            case(6):
+            {
+                clock_t start;
+                clock_t end;
+                for (int i = 0; i < 500; i++)
+                {
+                    start = clock();
+                    addbet(&list, num_, 2);
+                    end = clock();
+                    double TimeTaken = (double)(end - start) / CLOCKS_PER_SEC;
+                    printf("Time Complexity for inserting in the middle : %f\n", TimeTaken);
+                }
+                return;
+            }
+            case(7):
                 break;
             }
-        } while ((op > 4) || (op == 0));
+        } while ((op > 4) || (op == 0)); 
         print_l(list);
     }
-
+    
     printf("\nThe number of nodes is : %i\n", num_n);
     printf("The size of the structure is %i\n", sizeof(struct student));
     printf("The size of a node is %i\n", sizeof(node));
@@ -388,23 +468,23 @@ void dynamic_array()
     int op1;
     while (1)
     {
-        printf("Enter the desired operation:-\n(1)insert at the beginning.\n(2)insert at the end.\n(3)insert in the middle.\n(4)Exit.\n");
+        printf("Enter the desired operation:-\n(1)insert at the beginning.\n(2)insert at the end.\n(3)insert in the middle.\n(4)Time complexity at the begining\n(5)Time complexity at the end\n(6) Time complexity in the middle \n(7)Exit\n");
         scanf_s("%i", &op1);
-        if (op1 == 4)
+        if (op1 == 7)
             break;
         do {
-
-
+            
+            
             switch (op1)
             {
             case(1):
             {
-                students = insert_begin(students, n);
+                students = insert_begin(students, n,1);
                 break;
             }
             case(2):
             {
-                students = add_element_l(students, n);
+                students = add_element_l(students, n,1);
                 break;
             }
             case(3):
@@ -415,16 +495,58 @@ void dynamic_array()
                     break;
                 }
 
-                students = add_element_m(students, n);
+                students = add_element_m(students, n,1);
                 break;
             }
             case(4):
+            {
+                clock_t start;
+                clock_t end;
+                for (int i = 0; i < 500; i++)
+                {
+                    start = clock();
+                    students = insert_begin(students, n, 2);
+                    end = clock();
+                    double TimeTaken = (double)(end - start) / CLOCKS_PER_SEC;
+                    printf("Time Complexity for inserting at the beggining : %f\n", TimeTaken);
+                }
+                return;
+            }
+            case(5):
+            {
+                clock_t start;
+                clock_t end;
+                for (int i = 0; i < 500; i++)
+                {
+                    start = clock();
+                    students = add_element_l(students, n, 2);
+                    end = clock();
+                    double TimeTaken = (double)(end - start) / CLOCKS_PER_SEC;
+                    printf("Time Complexity for inserting at the end : %f\n", TimeTaken);
+                }
+                return;
+            }
+            case(6):
+            {
+                clock_t start;
+                clock_t end;
+                for (int i = 0; i < 500; i++)
+                {
+                    start = clock();
+                    students = add_element_m(students, n, 2);
+                    end = clock();
+                    double TimeTaken = (double)(end - start) / CLOCKS_PER_SEC;
+                    printf("Time Complexity for inserting in the middle : %f\n", TimeTaken);
+                }
+                return;
+            }
+            case(7):
                 break;
             }
         } while ((op1 > 4) || (op1 == 0));
         print_(students, n);
     }
-
+   
     printf("the size of the structure is %i ", sizeof(struct student));
     free(students);
 }
